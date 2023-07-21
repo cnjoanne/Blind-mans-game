@@ -23,7 +23,7 @@ reference game: https://github.com/Gooodgis/dont-touch-my-presents/blob/main/REA
 
 First, clone the repository using `git clone`   
 ```
-git clone https://github.com/Service-Design-Studio/1d-final-project-2023-sds-2023-team-09.git
+git clone https://github.com/Service-Design-Studio/1d-final-project-2023-sds-2023-team-09.git](https://github.com/cnjoanne/Blind-mans-game.git
 ```
 
 ## Making New changes
