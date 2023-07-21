@@ -37,7 +37,7 @@ def draw_window():
         WIN.fill(WHITE)
         # coordinates start from top left hand corner
         WIN.blit(ROAD_IMAGE, (0,0))
-        WIN.blit(BLINDMAN, (10,100)) ## image, coordinate
+        WIN.blit(BLINDMAN, (10, HEIGHT - BLINDMAN_HEIGHT -10)) ## image, coordinate
         WIN.blit(CAR_IMAGE, (10,10))
         pygame.display.update()
 
@@ -45,7 +45,6 @@ def draw_window():
 def main():
     clock = pygame.time.Clock() ## control time
     run = True
-
     try:
         while run:
             clock.tick(FPS)
