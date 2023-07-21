@@ -11,16 +11,17 @@ WHITE = (255, 255, 255)
 ## Frame per second
 FPS = 60
 
-BLINDMAN_WIDTH, BLINDMAN_HEIGHT = 100,  120
+BLINDMAN_WIDTH, BLINDMAN_HEIGHT = 50, 50
 ROAD_WIDTH, ROAD_HEIGHT = 460, 360
 CAR_WIDTH, CAR_HEIGHT = 100, 100
 ## Images
 BLINDMAN_IMAGE = pygame.image.load(
     os.path.join('data', 'assets', 'blindman.png'))
 ## scaling
-BLINDMAN = pygame.transform.rotate(pygame.transform.scale(BLINDMAN_IMAGE, (BLINDMAN_HEIGHT, BLINDMAN_WIDTH)), 90) # image, width by height || angle rotate
+BLINDMAN = pygame.transform.scale(BLINDMAN_IMAGE, (BLINDMAN_WIDTH, BLINDMAN_HEIGHT))
 CAR_IMAGE = pygame.image.load(
     os.path.join('data', 'assets', 'car.png'))
+CAR_IMAGE = pygame.transform.scale(CAR_IMAGE, (CAR_WIDTH, CAR_HEIGHT))
 ROAD_IMAGE = pygame.image.load(
     os.path.join('data', 'assets', 'road.png'))
 
@@ -34,7 +35,7 @@ def draw_window():
         # coordinates start from top left hand corner
         WIN.blit(ROAD_IMAGE, (0,0))
         # WIN.blit(ROAD_IMAGE)
-        WIN.blit(BLINDMAN, (0,0)) ## image, coordinate
+        WIN.blit(BLINDMAN, (10,100)) ## image, coordinate
         WIN.blit(CAR_IMAGE, (10,10))
         pygame.display.update()
 
@@ -42,10 +43,10 @@ def draw_window():
 
 
 def main():
-    clock = pygame.time.Clock() ## control time 
+    clock = pygame.time.Clock() ## control time
     run = True
 
-    try: 
+    try:
         while run:
             clock.tick(FPS)
             for event in pygame.event.get():
@@ -57,7 +58,7 @@ def main():
         pygame.quit()
     except SystemExit:
          pygame.quit()
-    
+
 
 
 if __name__ == "__main__":
