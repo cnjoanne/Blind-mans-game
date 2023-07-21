@@ -31,8 +31,6 @@ def draw_window():
 
 
 
-
-
 def main():
     clock = pygame.time.Clock() ## control time 
     run = True
