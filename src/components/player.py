@@ -1,7 +1,7 @@
 import pygame
 from pygame.locals import *
 
-from src.config import Config
+# from src.config import Config
 from src.services.visualise_service import VisualizationService
 
 vec = pygame.math.Vector2

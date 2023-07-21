@@ -1,13 +1,18 @@
 import pygame
 import os
+import random
 
 WIDTH, HEIGHT = 360, 660
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("First game")
 
+BORDER = pygame.Rect(WIDTH//2 - 5, 0, 10, HEIGHT)
 WHITE = (255, 255, 255)
-VEL = 5 # Velocity
+BLINDMAN_VEL = 5 # Velocity for blindman
+CAR_VEL = 3
 
+
+COLUMNS = {"LEFT": 90, "MIDDLE" : 180, "RIGHT" : 270}
 
 ## Frame per second
 FPS = 60
@@ -28,23 +33,37 @@ ROAD = pygame.image.load(
 ROAD_IMAGE = pygame.transform.scale(ROAD, (WIDTH,HEIGHT))
 
 def blindman_movement(keys_pressed, blindman):
-    if keys_pressed[pygame.K_a]: # LEFT
-        blindman.x -= VEL
-    if keys_pressed[pygame.K_d]: # RIGHT
-        blindman.x += VEL
+    if keys_pressed[pygame.K_a] and blindman.x - BLINDMAN_VEL > 0: # LEFT
+        blindman.x -= BLINDMAN_VEL
+    if keys_pressed[pygame.K_d] and blindman.x + BLINDMAN_VEL + blindman.width < WIDTH : # RIGHT
+        blindman.x += BLINDMAN_VEL
 
-def car_movements():
+## Input lane_side: LEFT, MIDDLE, RIGHT
+def car_movements(lane_side):
+     car_x = COLUMNS.get(lane_side)
+     car_y = -10
+    ## OOP
+
+     pass
+
+def handle_hit(blindman, car):
+     
      pass
 
 # drawings, they are squential
 def draw_window(blindman):
         WIN.fill(WHITE)
         # coordinates start from top left hand corner
+        ## COORDINATES
         WIN.blit(ROAD_IMAGE, (0,0))
-        ## WIN.blit(BLINDMAN, (10, HEIGHT - BLINDMAN_HEIGHT -10)) ## image, coordinate
         WIN.blit(BLINDMAN, (blindman.x, HEIGHT - BLINDMAN_HEIGHT -10)) ## image, coordinate
         WIN.blit(CAR_IMAGE, (10,10))
+
+        ## SCORE SYSTEM
+
+
         pygame.display.update()
+
 
 
 def main():
@@ -57,14 +76,16 @@ def main():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     run = False
+                # if event.type == BLINDMAN_HIT:
+                     
+                #      run = False
 
             
+
             keys_pressed = pygame.key.get_pressed()
             blindman_movement(keys_pressed, blindman)
-           
 
             draw_window(blindman)
-            # pygame.display.update()
         pygame.quit()
     except SystemExit:
          pygame.quit()
