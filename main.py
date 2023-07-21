@@ -13,13 +13,13 @@ FPS = 60
 BLINDMAN_HEIGHT, BLINDMAN_WIDTH = 3, 5
 ## Images
 BLINDMAN_IMAGE = pygame.image.load(
-    os.path.join('data', 'blindman.png'))
+    os.path.join('data', 'assets', 'blindman.png'))
 ## scaling
-BLINDMAN = pygame.transform.rotate(pygame.transform_scale(BLINDMAN_IMAGE, (BLINDMAN_HEIGHT, BLINDMAN_WIDTH)), 90) # image, width by height || angle rotate
+BLINDMAN = pygame.transform.rotate(pygame.transform.scale(BLINDMAN_IMAGE, (BLINDMAN_HEIGHT, BLINDMAN_WIDTH)), 90) # image, width by height || angle rotate
 CAR_IMAGE = pygame.image.load(
-    os.path.join('data', 'car.png'))
+    os.path.join('data', 'assets', 'car.png'))
 ROAD_IMAGE = pygame.image.load(
-    os.path.join('data', 'road.png'))
+    os.path.join('data', 'assets', 'road.png'))
 
 # drawings, they are squential
 def draw_window():
@@ -36,12 +36,8 @@ def main():
     run = True
     while run:
         clock.tick(FPS)
-        for event in pygame.event.get():
-            if event.typye == pygame.QUIT:
-                run = False
 
         draw_window()
-    pygame.quit()
 
 if __name__ == "main":
     main()
