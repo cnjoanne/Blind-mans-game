@@ -12,7 +12,8 @@ BLINDMAN_VEL = 5 # Velocity for blindman
 CAR_VEL = 3
 
 
-COLUMNS = {"LEFT": 90, "MIDDLE" : 180, "RIGHT" : 270}
+COLUMNS = {"LEFT": 25, "MIDDLE" : 155, "RIGHT" : 275}
+MAN_COLUMN = [25, 155, 275]
 
 ## Frame per second
 FPS = 60
@@ -33,10 +34,12 @@ ROAD = pygame.image.load(
 ROAD_IMAGE = pygame.transform.scale(ROAD, (WIDTH,HEIGHT))
 
 def blindman_movement(keys_pressed, blindman):
-    if keys_pressed[pygame.K_a] and blindman.x - BLINDMAN_VEL > 0: # LEFT
-        blindman.x -= BLINDMAN_VEL
-    if keys_pressed[pygame.K_d] and blindman.x + BLINDMAN_VEL + blindman.width < WIDTH : # RIGHT
-        blindman.x += BLINDMAN_VEL
+    if keys_pressed[pygame.K_a]: # LEFT
+        blindman.x = MAN_COLUMN[0]
+    if keys_pressed[pygame.K_s]:
+        blindman.x = MAN_COLUMN[1]
+    if keys_pressed[pygame.K_d]: # RIGHT
+        blindman.x = MAN_COLUMN[2]
 
 ## Input lane_side: LEFT, MIDDLE, RIGHT
 def car_movements(lane_side):
@@ -56,7 +59,7 @@ def draw_window(blindman):
         # coordinates start from top left hand corner
         ## COORDINATES
         WIN.blit(ROAD_IMAGE, (0,0))
-        WIN.blit(BLINDMAN, (blindman.x, HEIGHT - BLINDMAN_HEIGHT -10)) ## image, coordinate
+        WIN.blit(BLINDMAN, (blindman.x, HEIGHT - BLINDMAN_HEIGHT -30)) ## image, coordinate
         WIN.blit(CAR_IMAGE, (10,10))
 
         ## SCORE SYSTEM
@@ -67,7 +70,8 @@ def draw_window(blindman):
 
 
 def main():
-    blindman = pygame.Rect(10, 10, BLINDMAN_WIDTH, BLINDMAN_HEIGHT)
+    blindman = pygame.Rect(MAN_COLUMN[1], 10, BLINDMAN_WIDTH, BLINDMAN_HEIGHT)
+    pos = 1
     clock = pygame.time.Clock() ## control time
     run = True
     try:
