@@ -1,5 +1,9 @@
 import pygame
+<<<<<<< Updated upstream
 import os
+=======
+import os 
+>>>>>>> Stashed changes
 
 WIDTH, HEIGHT = 300,500
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -13,13 +17,13 @@ FPS = 60
 BLINDMAN_HEIGHT, BLINDMAN_WIDTH = 3, 5
 ## Images
 BLINDMAN_IMAGE = pygame.image.load(
-    os.path.join('data', 'blindman.png'))
+    os.path.join('data', 'assets', 'blindman.png'))
 ## scaling
 BLINDMAN = pygame.transform.rotate(pygame.transform_scale(BLINDMAN_IMAGE, (BLINDMAN_HEIGHT, BLINDMAN_WIDTH)), 90) # image, width by height || angle rotate
 CAR_IMAGE = pygame.image.load(
-    os.path.join('data', 'car.png'))
+    os.path.join('data', 'assets', 'car.png'))
 ROAD_IMAGE = pygame.image.load(
-    os.path.join('data', 'road.png'))
+    os.path.join('data', 'assets', 'road.png'))
 
 # drawings, they are squential
 def draw_window():
