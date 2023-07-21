@@ -1,4 +1,5 @@
 import pygame
+import os
 
 WIDTH, HEIGHT = 300,500
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -26,6 +27,10 @@ def draw_window():
         # coordinates start from top left hand corner
         WIN.blit(BLINDMAN, (0,0)) ## image, coordinate
         pygame.display.update()
+
+
+
+
 
 
 def main():
