@@ -43,7 +43,6 @@ def main():
                 run = False
 
         draw_window()
-    pygame.quit()
 
 if __name__ == "main":
     main()
