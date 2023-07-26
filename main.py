@@ -83,12 +83,12 @@ def collide(obj1, obj2):
 def main():
     run = True
     FPS = 60
-    lives = 10
+    lives = 3
     main_font = pygame.font.SysFont("roboto mono", 30)
     lost_font = pygame.font.SysFont("roboto mono", 30)
 
     car_ls = []
-    wave_length = 5
+    wave_length = 3
 
     blindman = BlindMan(COLUMN[1], 590)
 

@@ -19,7 +19,6 @@
 following link : https://www.youtube.com/watch?v=jO6qQDNa2UY \
 reference game: https://github.com/Gooodgis/dont-touch-my-presents/blob/main/README.md
 
-The working game is in the Game folder
 
 ## Collaborating
 
