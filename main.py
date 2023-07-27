@@ -9,12 +9,14 @@ pygame.font.init()
 WIDTH, HEIGHT = 360, 660
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Blind man's game")
-
-
 BORDER = pygame.Rect(WIDTH//2 - 5, 0, 10, HEIGHT)
+
+
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-CAR_VEL = 2
+
+# Car Velocity
+CAR_VEL = 3
 
 
 ## LEFT. MIDDLE, RIGHT
@@ -88,7 +90,7 @@ def main():
     lost_font = pygame.font.SysFont("roboto mono", 30)
 
     car_ls = []
-    wave_length = 3
+    wave_length = 6 # Number of cars in 1 wave
 
     blindman = BlindMan(COLUMN[1], 590)
 
@@ -101,13 +103,10 @@ def main():
         WIN.blit(ROAD_IMAGE, (0,0))
         #draw text
         lives_label = main_font.render(f"Lives: {lives}", 1, (255,255,255))
-
         WIN.blit(lives_label, (5, 5))
         
-
         for cars in car_ls:
             cars.draw(WIN)
-
         blindman.draw(WIN)
 
         if lost:
@@ -144,7 +143,7 @@ def main():
 
         if keys_pressed[pygame.K_a]: #LEFT
             blindman.x = COLUMN[0]
-        if keys_pressed[pygame.K_s]:
+        if keys_pressed[pygame.K_s]: #MIDDLE
             blindman.x = COLUMN[1]
         if keys_pressed[pygame.K_d]: # RIGHT
             blindman.x = COLUMN[2]
