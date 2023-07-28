@@ -159,6 +159,7 @@ def main():
         if len(car_ls) == 0 :
             for i in range(wave_length):
                 car = Car(CAR_COLUMN[random.randint(0,2)], random.randrange(-1500, -100) )
+                
                 car_ls.append(car)
 
         current_time = pygame.time.get_ticks()
@@ -170,13 +171,18 @@ def main():
                 quit()
                 
         keys_pressed = pygame.key.get_pressed()
-
-        if keys_pressed[pygame.K_a]: #LEFT
-            blindman.x = COLUMN[0]
-        if keys_pressed[pygame.K_s]: #MIDDLE
-            blindman.x = COLUMN[1]
-        if keys_pressed[pygame.K_d]: # RIGHT
-            blindman.x = COLUMN[2]
+        BLINDMAN_VEL = 5
+        if keys_pressed[pygame.K_a] and blindman.x - BLINDMAN_VEL > 0 : #LEFT
+            blindman.x -= BLINDMAN_VEL
+        if keys_pressed[pygame.K_d] and blindman.x + BLINDMAN_VEL + blindman.get_width() < WIDTH: #RIGHT
+            blindman.x += BLINDMAN_VEL
+            
+        # if keys_pressed[pygame.K_a]: #LEFT
+        #     blindman.x = COLUMN[0]
+        # if keys_pressed[pygame.K_s]: #MIDDLE
+        #     blindman.x = COLUMN[1]
+        # if keys_pressed[pygame.K_d]: # RIGHT
+        #     blindman.x = COLUMN[2]
 
         for cars in car_ls[:]:
             cars.move(CAR_VEL)
