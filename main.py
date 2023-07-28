@@ -75,6 +75,24 @@ class Car(Object):
     def move(self, vel):
         self.y += vel
 
+class Veil(Object):
+    def __init__(self, x, y):
+        super().__init__(x, y)
+        self.width = 250
+        self.height = 400
+        self.color = (0, 0, 0)
+
+    def draw(self, window):
+        pygame.draw.rect(window, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
+
+    def get_mask(self):
+        return pygame.mask.from_surface(self.obj_img)
+
+    def move_randomly(self):
+        # Move the Veil randomly around the screen
+        self.x = random.randint(0, WIDTH - self.width)
+        self.y = random.randint(0, HEIGHT - self.height)
+
 
 def collide(obj1, obj2):
     offset_x = obj2.x - obj1.x
@@ -86,6 +104,7 @@ def main():
     run = True
     FPS = 60
     lives = 3
+    score = 0
     main_font = pygame.font.SysFont("roboto mono", 30)
     lost_font = pygame.font.SysFont("roboto mono", 30)
 
@@ -93,6 +112,8 @@ def main():
     wave_length = 6 # Number of cars in 1 wave
 
     blindman = BlindMan(COLUMN[1], 590)
+
+    veil = Veil(COLUMN[1], 0)
 
     clock = pygame.time.Clock()
 
@@ -104,16 +125,22 @@ def main():
         #draw text
         lives_label = main_font.render(f"Lives: {lives}", 1, (255,255,255))
         WIN.blit(lives_label, (5, 5))
+        score_label = main_font.render(f"Score: {score}", 1, (255,255,255))
+        WIN.blit(score_label, (260, 6))
         
         for cars in car_ls:
             cars.draw(WIN)
         blindman.draw(WIN)
+        veil.draw(WIN)
 
         if lost:
             lost_label = lost_font.render("You Lost :c", 1, (255, 255, 255))
             WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
         pygame.display.update()
+
+    veil_change_time = pygame.time.get_ticks()
+    veil_move_interval = 1000  # Move the veil in how many seconds
 
     while run : 
         clock.tick(FPS)
@@ -134,7 +161,10 @@ def main():
                 car = Car(CAR_COLUMN[random.randint(0,2)], random.randrange(-1500, -100) )
                 car_ls.append(car)
 
-
+        current_time = pygame.time.get_ticks()
+        if current_time - veil_change_time >= veil_move_interval:
+            veil.move_randomly()
+            veil_change_time = current_time
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
@@ -155,6 +185,7 @@ def main():
                 lives -= 1
                 car_ls.remove(cars)
             elif cars.y + cars.get_height() > HEIGHT:
+                 score += 1
                  car_ls.remove(cars)
 
 def main_menu():
