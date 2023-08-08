@@ -4,7 +4,7 @@ import time
 import random
 
 pygame.font.init()
-
+pygame.mixer.init()
 
 WIDTH, HEIGHT = 360, 660
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -55,7 +55,6 @@ class Object:
     def get_height(self):
         return self.obj_img.get_height()
 
-
 class BlindMan(Object):
     def __init__(self, x, y):
         super().__init__(x, y)
@@ -98,7 +97,6 @@ def collide(obj1, obj2):
     offset_x = obj2.x - obj1.x
     offset_y = obj2.y - obj1.y
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
-
 
 def main():
     run = True
@@ -158,8 +156,8 @@ def main():
 
         if len(car_ls) == 0 :
             for i in range(wave_length):
-                car = Car(CAR_COLUMN[random.randint(0,2)], random.randrange(-1500, -100) )
-                
+                CAR_COL_IND = random.randint(0,2)
+                car = Car(CAR_COLUMN[CAR_COL_IND], random.randrange(-1500, -100) )
                 car_ls.append(car)
 
         current_time = pygame.time.get_ticks()
@@ -186,9 +184,11 @@ def main():
 
         for cars in car_ls[:]:
             cars.move(CAR_VEL)
-            
+        
             if collide(cars, blindman):
                 lives -= 1
+                hurt = pygame.mixer.Sound("data/audio/hurt.mp3")
+                pygame.mixer.Sound.play(hurt)
                 car_ls.remove(cars)
             elif cars.y + cars.get_height() > HEIGHT:
                  score += 1
