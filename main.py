@@ -66,10 +66,29 @@ class BlindMan(Object):
 
 
 class Car(Object):
-    def __init__(self, x, y):
+    def __init__(self, x, y, lane):
         super().__init__(x, y)
         self.obj_img = CAR_IMAGE
         self.mask = pygame.mask.from_surface(self.obj_img)
+        self.lane = lane  # Store the lane where the car spawns
+
+        # Load the appropriate sound based on the lane
+        if self.lane == 0:
+            self.spawn_sound = pygame.mixer.Sound("./data/audio/car_horn_left.mp3")
+        elif self.lane == 1:
+            self.spawn_sound = pygame.mixer.Sound("./data/audio/car horn.mp3")
+        elif self.lane == 2:
+            self.spawn_sound = pygame.mixer.Sound("./data/audio/car_horn_right.mp3")
+
+        self.sound_played = False
+
+    def play_spawn_sound(self):
+        if not self.sound_played:
+            self.spawn_sound.play()
+            self.sound_played = True
+    
+    def has_crossed_line(self, line_y):
+        return self.y > line_y
 
     def move(self, vel):
         self.y += vel
@@ -144,6 +163,8 @@ def main():
         clock.tick(FPS)
         redraw_window()
 
+        sound_line_y = 200
+
         if lives <= 0:
             lost = True
             lost_count += 1
@@ -157,7 +178,7 @@ def main():
         if len(car_ls) == 0 :
             for i in range(wave_length):
                 CAR_COL_IND = random.randint(0,2)
-                car = Car(CAR_COLUMN[CAR_COL_IND], random.randrange(-1500, -100) )
+                car = Car(CAR_COLUMN[CAR_COL_IND], random.randrange(-1500, -100), CAR_COL_IND)
                 car_ls.append(car)
 
         current_time = pygame.time.get_ticks()
@@ -185,6 +206,10 @@ def main():
         for cars in car_ls[:]:
             cars.move(CAR_VEL)
         
+            if cars.has_crossed_line(sound_line_y) and not cars.sound_played:
+                cars.play_spawn_sound()
+                cars.sound_played = True
+
             if collide(cars, blindman):
                 lives -= 1
                 hurt = pygame.mixer.Sound("data/audio/hurt.mp3")
