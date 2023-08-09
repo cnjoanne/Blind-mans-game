@@ -12,7 +12,7 @@ pip install pygame
 
 1. ~~Add png files into data [blind person, cars, road, bushes(optional), traffic light(optional)]~~
 2. Add sounds of traffic, cars
-3. Add blindman's view(screen blackout)
+3. ~~Add blindman's view(screen blackout)~~
 4. Stop cars from overlapping each other
 
 

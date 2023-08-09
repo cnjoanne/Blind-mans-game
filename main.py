@@ -2,9 +2,11 @@ import pygame
 import os
 import time
 import random
+from pygame import mixer
+
 
 pygame.font.init()
-
+mixer.init()
 
 WIDTH, HEIGHT = 360, 660
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -55,7 +57,6 @@ class Object:
     def get_height(self):
         return self.obj_img.get_height()
 
-
 class BlindMan(Object):
     def __init__(self, x, y):
         super().__init__(x, y)
@@ -67,10 +68,29 @@ class BlindMan(Object):
 
 
 class Car(Object):
-    def __init__(self, x, y):
+    def __init__(self, x, y, lane):
         super().__init__(x, y)
         self.obj_img = CAR_IMAGE
         self.mask = pygame.mask.from_surface(self.obj_img)
+        self.lane = lane  # Store the lane where the car spawns
+
+        # Load the appropriate sound based on the lane
+        if self.lane == 0:
+            self.spawn_sound = pygame.mixer.Sound("./data/audio/car_horn_left.mp3")
+        elif self.lane == 1:
+            self.spawn_sound = pygame.mixer.Sound("./data/audio/car horn.mp3")
+        elif self.lane == 2:
+            self.spawn_sound = pygame.mixer.Sound("./data/audio/car_horn_right.mp3")
+
+        self.sound_played = False
+
+    def play_spawn_sound(self):
+        if not self.sound_played:
+            self.spawn_sound.play()
+            self.sound_played = True
+    
+    def has_crossed_line(self, line_y):
+        return self.y > line_y
 
     def move(self, vel):
         self.y += vel
@@ -145,13 +165,21 @@ def main():
     lost = False
     lost_count = 0
 
+    def road_background():
+        mixer.music.load("data/audio/traffic_sound.mp3")
+        mixer.music.set_volume(0.9)
+        mixer.music.play()
+
     def redraw_window():
         WIN.blit(ROAD_IMAGE, (0,0))
+
         #draw text
-        lives_label = main_font.render(f"Lives: {lives}", 1, (255,255,255))
+        lives_label = main_font.render(f"Lives: {lives}", 1, WHITE)
         WIN.blit(lives_label, (5, 5))
-        score_label = main_font.render(f"Score: {score}", 1, (255,255,255))
-        WIN.blit(score_label, (255, 6))
+
+        score_label = main_font.render(f"Score: {score}", 1, WHITE)
+        WIN.blit(score_label, (260, 6))
+
         
         for cars in car_ls:
             cars.draw(WIN)
@@ -159,7 +187,7 @@ def main():
         veil.draw(WIN)
 
         if lost:
-            lost_label = lost_font.render("You Lost :c", 1, (255, 255, 255))
+            lost_label = lost_font.render("You Lost :c", 1, WHITE)
             WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
         pygame.display.update()
@@ -170,6 +198,9 @@ def main():
     while run : 
         clock.tick(FPS)
         redraw_window()
+        road_background()
+
+        sound_line_y = 200
 
         if lives <= 0:
             lost = True
@@ -183,7 +214,8 @@ def main():
 
         if len(car_ls) == 0 :
             for i in range(wave_length):
-                car = Car(CAR_COLUMN[random.randint(0,2)], random.randrange(-1500, -100) )
+                CAR_COL_IND = random.randint(0,2)
+                car = Car(CAR_COLUMN[CAR_COL_IND], random.randrange(-1500, -100), CAR_COL_IND)
                 car_ls.append(car)
 
         current_time = pygame.time.get_ticks()
@@ -196,7 +228,12 @@ def main():
                 quit()
                 
         keys_pressed = pygame.key.get_pressed()
-
+        # BLINDMAN_VEL = 5
+        # if keys_pressed[pygame.K_a] and blindman.x - BLINDMAN_VEL > 0 : #LEFT
+        #     blindman.x -= BLINDMAN_VEL
+        # if keys_pressed[pygame.K_d] and blindman.x + BLINDMAN_VEL + blindman.get_width() < WIDTH: #RIGHT
+        #     blindman.x += BLINDMAN_VEL
+            
         if keys_pressed[pygame.K_a]: #LEFT
             blindman.x = COLUMN[0]
         if keys_pressed[pygame.K_s]: #MIDDLE
@@ -206,9 +243,15 @@ def main():
 
         for cars in car_ls[:]:
             cars.move(CAR_VEL)
-            
+        
+            if cars.has_crossed_line(sound_line_y) and not cars.sound_played:
+                cars.play_spawn_sound()
+                cars.sound_played = True
+
             if collide(cars, blindman):
                 lives -= 1
+                hurt = pygame.mixer.Sound("data/audio/hurt.mp3")
+                pygame.mixer.Sound.play(hurt)
                 car_ls.remove(cars)
             elif cars.y + cars.get_height() > HEIGHT:
                  score += 1
