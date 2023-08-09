@@ -98,12 +98,37 @@ class Car(Object):
 class Veil(Object):
     def __init__(self, x, y):
         super().__init__(x, y)
-        self.width = 250
+        self.width = 270
         self.height = 400
         self.color = (0, 0, 0)
+        self.obj_img = pygame.Surface((self.width, self.height))
+        self.last_shape_change_time = pygame.time.get_ticks()
+        self.shape_change_interval = 2000 
+        self.max_y = 30  # Maximum height limit for the veil
 
     def draw(self, window):
+        if self.should_change_shape():
+            self.update_shape()
+        self.adjust_position()
         pygame.draw.rect(window, self.color, pygame.Rect(self.x, self.y, self.width, self.height))
+
+    def should_change_shape(self):
+        # Check the time before shape change
+        current_time = pygame.time.get_ticks()
+        return current_time - self.last_shape_change_time >= self.shape_change_interval
+    
+    def update_shape(self):
+        # Randomly update the width and height of the veil
+        self.width = random.randint(150, 270)
+        self.height = random.randint(250, 400)
+        self.obj_img = pygame.Surface((self.width, self.height))
+        self.obj_img.fill(self.color)
+        self.last_shape_change_time = pygame.time.get_ticks()
+
+    def adjust_position(self):
+        # Check if the veil's y position exceeds the maximum limit
+        if self.y < self.max_y:
+            self.y = self.max_y
 
     def get_mask(self):
         return pygame.mask.from_surface(self.obj_img)
@@ -151,8 +176,10 @@ def main():
         #draw text
         lives_label = main_font.render(f"Lives: {lives}", 1, WHITE)
         WIN.blit(lives_label, (5, 5))
+
         score_label = main_font.render(f"Score: {score}", 1, WHITE)
         WIN.blit(score_label, (260, 6))
+
         
         for cars in car_ls:
             cars.draw(WIN)
@@ -166,7 +193,7 @@ def main():
         pygame.display.update()
 
     veil_change_time = pygame.time.get_ticks()
-    veil_move_interval = 1000  # Move the veil in how many seconds
+    veil_move_interval = 2000  # Move the veil in how many seconds
 
     while run : 
         clock.tick(FPS)
@@ -195,6 +222,7 @@ def main():
         if current_time - veil_change_time >= veil_move_interval:
             veil.move_randomly()
             veil_change_time = current_time
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 quit()
