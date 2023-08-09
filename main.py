@@ -2,9 +2,11 @@ import pygame
 import os
 import time
 import random
+from pygame import mixer
+
 
 pygame.font.init()
-pygame.mixer.init()
+mixer.init()
 
 WIDTH, HEIGHT = 360, 660
 WIN = pygame.display.set_mode((WIDTH, HEIGHT))
@@ -117,6 +119,7 @@ def collide(obj1, obj2):
     offset_y = obj2.y - obj1.y
     return obj1.mask.overlap(obj2.mask, (offset_x, offset_y)) != None
 
+
 def main():
     run = True
     FPS = 60
@@ -137,12 +140,18 @@ def main():
     lost = False
     lost_count = 0
 
+    def road_background():
+        mixer.music.load("data/audio/traffic_sound.mp3")
+        mixer.music.set_volume(0.9)
+        mixer.music.play()
+
     def redraw_window():
         WIN.blit(ROAD_IMAGE, (0,0))
+
         #draw text
-        lives_label = main_font.render(f"Lives: {lives}", 1, (255,255,255))
+        lives_label = main_font.render(f"Lives: {lives}", 1, WHITE)
         WIN.blit(lives_label, (5, 5))
-        score_label = main_font.render(f"Score: {score}", 1, (255,255,255))
+        score_label = main_font.render(f"Score: {score}", 1, WHITE)
         WIN.blit(score_label, (260, 6))
         
         for cars in car_ls:
@@ -151,7 +160,7 @@ def main():
         veil.draw(WIN)
 
         if lost:
-            lost_label = lost_font.render("You Lost :c", 1, (255, 255, 255))
+            lost_label = lost_font.render("You Lost :c", 1, WHITE)
             WIN.blit(lost_label, (WIDTH/2 - lost_label.get_width()/2, 350))
 
         pygame.display.update()
@@ -162,6 +171,7 @@ def main():
     while run : 
         clock.tick(FPS)
         redraw_window()
+        road_background()
 
         sound_line_y = 200
 
