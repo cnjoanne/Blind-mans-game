@@ -18,7 +18,7 @@ WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
 
 # Car Velocity
-CAR_VEL = 3
+CAR_VEL = 4.5
 
 
 ## LEFT. MIDDLE, RIGHT
@@ -119,8 +119,8 @@ class Veil(Object):
     
     def update_shape(self):
         # Randomly update the width and height of the veil
-        self.width = random.randint(150, 270)
-        self.height = random.randint(250, 400)
+        self.width = random.randint(240, 270)
+        self.height = random.randint(350, 400)
         self.obj_img = pygame.Surface((self.width, self.height))
         self.obj_img.fill(self.color)
         self.last_shape_change_time = pygame.time.get_ticks()
@@ -154,7 +154,7 @@ def main():
     lost_font = pygame.font.SysFont("roboto mono", 30)
 
     car_ls = []
-    wave_length = 6 # Number of cars in 1 wave
+    wave_length = 7 # Number of cars in 1 wave
 
     blindman = BlindMan(COLUMN[1], 590)
 
