@@ -167,7 +167,7 @@ def main():
 
     def road_background():
         mixer.music.load("data/audio/traffic_sound.mp3")
-        mixer.music.set_volume(0.9)
+        mixer.music.set_volume(1.3)
         mixer.music.play()
 
     def redraw_window():
