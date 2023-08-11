@@ -76,11 +76,11 @@ class Car(Object):
 
         # Load the appropriate sound based on the lane
         if self.lane == 0:
-            self.spawn_sound = pygame.mixer.Sound("./data/audio/car_horn_left.mp3")
+            self.spawn_sound = pygame.mixer.Sound("./data/audio/car_horn_right.mp3")
         elif self.lane == 1:
             self.spawn_sound = pygame.mixer.Sound("./data/audio/car horn.mp3")
         elif self.lane == 2:
-            self.spawn_sound = pygame.mixer.Sound("./data/audio/car_horn_right.mp3")
+            self.spawn_sound = pygame.mixer.Sound("./data/audio/car_horn_left.mp3")
 
         self.sound_played = False
 
@@ -119,8 +119,8 @@ class Veil(Object):
     
     def update_shape(self):
         # Randomly update the width and height of the veil
-        self.width = random.randint(240, 270)
-        self.height = random.randint(350, 400)
+        self.width = random.randint(240, 300)
+        self.height = random.randint(350, 500)
         self.obj_img = pygame.Surface((self.width, self.height))
         self.obj_img.fill(self.color)
         self.last_shape_change_time = pygame.time.get_ticks()
